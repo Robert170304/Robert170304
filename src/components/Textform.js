@@ -5,14 +5,33 @@ import Preview from "./Preview";
 function Textform(props) {
   const [textValue, setTextvalue] = React.useState("Enter your text here...");
   const [showPreview, setShowPreview] = React.useState(false);
-  const [activeBold, setActiveBold] = React.useState(false)
-  const [activeItalic, setActiveItalic] = React.useState(false)
+  const [activeBold, setActiveBold] = React.useState(true)
+  const [activeItalic, setActiveItalic] = React.useState(true)
   const [copyBtn, setcopyBtn] = React.useState({
     textVal: "Copy Text",
     btnColor: "light",
   });
   const [choosedSize, setChoosedSize] = React.useState(16)
   const [showClearTextModal, setShowClearTextModal] = React.useState(false)
+
+  let styles = {
+    backgroundColor: props.theme === "dark" ? "#353941" : "",
+    color: props.theme === "dark" ? "white" : "",
+    transition: "all 0.3s linear",
+    borderRadius: "5px",
+    marginTop: "100px",
+  };
+
+  let previewStyles = {
+    border: `2px solid ${props.theme === "dark" ? "#5F85DB" : "#111"}`,
+    borderRadius: "5px",
+    padding: "10px",
+    width: '100%',
+    backgroundColor: '#fff',
+    overflow: 'auto'
+  };
+
+  const [textStyles, setTextStyles] = React.useState({fontSize: 16})
 
   /*let textValArr = textValue.split(' ')
   React.useEffect(() => {
@@ -104,12 +123,18 @@ function Textform(props) {
     setActiveBold((oldText) => {
       return !oldText;
     });
+    setTextStyles((oldStyles) => {
+      return {...oldStyles, fontWeight: activeBold ? 'bold' : 'normal'}
+    })
   }
 
   function handleItalic() {
     setActiveItalic((oldText) => {
       return !oldText;
     });
+    setTextStyles((oldStyles) => {
+      return {...oldStyles, fontStyle: activeItalic ? 'italic' : 'normal'}
+    })
   }
 
   function handleChange(e) {
@@ -117,30 +142,15 @@ function Textform(props) {
   }
 
   function handleFontSize(e) {
-    setChoosedSize(e.target.textContent)
+    setTextStyles((oldStyles) => {
+      return {...oldStyles, fontSize: parseInt(e.target.textContent)}
+    })
   }
 
-  let styles = {
-    backgroundColor: props.theme === "dark" ? "#353941" : "",
-    color: props.theme === "dark" ? "white" : "",
-    transition: "all 0.3s linear",
-    borderRadius: "5px",
-    marginTop: "100px",
-  };
-
-  let previewStyles = {
-    border: `2px solid ${props.theme === "dark" ? "#5F85DB" : "#111"}`,
-    borderRadius: "5px",
-    padding: "10px",
-    width: '100%',
-    backgroundColor: '#fff',
-    overflow: 'auto'
-  };
-
-  let textStyles = {
-    fontWeight: activeBold ? 'bold' : 'normal',
-    fontStyle: activeItalic ? 'italic' : 'normal',
-    fontSize: choosedSize >= 8 && choosedSize <= 36 ? `${choosedSize}px` : 'medium'
+  function handleTextAlign(alignVal) {
+    setTextStyles((oldStyles) => {
+      return {...oldStyles, textAlign: alignVal}
+    })
   }
 
   return (
@@ -150,7 +160,7 @@ function Textform(props) {
       {showPreview ? <Preview handleClosePreview={handleClosePreview} previewStyles={previewStyles}textValue={textValue}/> :
       <div className="container px-4 py-2" style={styles}>
         <div className="d-flex justify-content-between align-items-center">
-          <div className="actionEls d-flex justify-content-between align-items-center flex-wrap">
+          <div className="actionBtns d-flex justify-content-between align-items-center flex-wrap">
             <div className="btn-group">
               <button className="btn btn-light btn-sm d-flex justify-content-between align-items-center m-2 dropdown-toggle" 
               type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" disabled={textValue.length === 0}>
@@ -191,7 +201,7 @@ function Textform(props) {
               </ul>
             </div>
             <div className="input-group m-2 d-flex" style={{width: 'auto'}}>
-              <input value={choosedSize} onChange={handleChange} type="text" 
+              <input value={textStyles.fontSize} onChange={handleChange} type="text" 
               className="form-control" aria-label="Text input with dropdown button" 
               disabled={textValue.length === 0}
               style={{maxWidth: '50px'}}/>
@@ -232,38 +242,41 @@ function Textform(props) {
             </button>
             <button
               className="btn btn-light btn-sm d-flex m-2"
-              onClick={handleItalic}
+              onClick={() => {handleTextAlign('left')}}
               disabled={textValue.length === 0}
               data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-classname="custom-tooltip"
-              title="Italic text."
+              title="Align text left."
             >
               <span className="material-symbols-outlined">format_align_left</span>
-            </button><button
+            </button>
+            <button
               className="btn btn-light btn-sm d-flex m-2"
-              onClick={handleItalic}
+              onClick={() => {handleTextAlign('right')}}
               disabled={textValue.length === 0}
               data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-classname="custom-tooltip"
-              title="Italic text."
+              title="Align text right."
             >
               <span className="material-symbols-outlined">format_align_right</span>
-            </button><button
+            </button>
+            <button
               className="btn btn-light btn-sm d-flex m-2"
-              onClick={handleItalic}
+              onClick={() => {handleTextAlign('center')}}
               disabled={textValue.length === 0}
               data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-classname="custom-tooltip"
-              title="Italic text."
+              title="Align text center."
             >
               <span className="material-symbols-outlined">format_align_center</span>
-            </button><button
+            </button>
+            <button
               className="btn btn-light btn-sm d-flex m-2"
-              onClick={handleItalic}
+              onClick={() => {handleTextAlign('justify')}}
               disabled={textValue.length === 0}
               data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-classname="custom-tooltip"
-              title="Italic text."
+              title="Align text justify."
             >
               <span className="material-symbols-outlined">format_align_justify</span>
             </button>
