@@ -4,14 +4,14 @@ import Preview from "./Preview";
 
 function Textform(props) {
   const [textValue, setTextvalue] = React.useState("Enter your text here...");
+  const [fontSizeINputVal, setFontSizeINputVal] = React.useState(null);
   const [showPreview, setShowPreview] = React.useState(false);
-  const [activeBold, setActiveBold] = React.useState(true)
-  const [activeItalic, setActiveItalic] = React.useState(true)
+  const [activeBold, setActiveBold] = React.useState(false)
+  const [activeItalic, setActiveItalic] = React.useState(false)
   const [copyBtn, setcopyBtn] = React.useState({
     textVal: "Copy Text",
     btnColor: "light",
   });
-  const [choosedSize, setChoosedSize] = React.useState(16)
   const [showClearTextModal, setShowClearTextModal] = React.useState(false)
 
   let styles = {
@@ -49,7 +49,7 @@ function Textform(props) {
       for (let j = el; j <= 28; j= j+2) {
         const newEl = j
         fontSizesArr.push(newEl)
-        if(newEl == 28){
+        if(newEl === 28){
           for (let k = newEl; k <= 36; k=k+8) {
             const newEl2 = k;
             fontSizesArr.push(newEl2)
@@ -137,8 +137,11 @@ function Textform(props) {
     })
   }
 
-  function handleChange(e) {
-    setChoosedSize(e.target.value)
+  function handleFontSizeChange(e) {
+    setTextStyles((oldStyles) => {
+      return {...oldStyles, fontSize: isNaN(e.target.value) || e.target.value === NaN || e.target.value === '' ?16 : parseInt(e.target.value)}
+    })
+    setFontSizeINputVal(e.target.value)
   }
 
   function handleFontSize(e) {
@@ -166,7 +169,7 @@ function Textform(props) {
               type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" disabled={textValue.length === 0}>
                 <span className="material-symbols-outlined">text_format</span>
               </button>
-              <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+              <ul className="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
                 <li>
                   <button
                     className="dropdown-item"
@@ -201,7 +204,7 @@ function Textform(props) {
               </ul>
             </div>
             <div className="input-group m-2 d-flex" style={{width: 'auto'}}>
-              <input value={textStyles.fontSize} onChange={handleChange} type="text" 
+              <input type="number" placeholder={textStyles.fontSize} onChange={handleFontSizeChange} 
               className="form-control" aria-label="Text input with dropdown button" 
               disabled={textValue.length === 0}
               style={{maxWidth: '50px'}}/>
@@ -210,18 +213,20 @@ function Textform(props) {
                 <span className="material-symbols-outlined">text_increase/text_decrease</span>
               </button>
               <ul className="dropdown-menu dropdown-menu-end" style={{height: '200px', overflow: 'auto'}}>
-                {fontSizesArr.map((size, id) => {
-                  return <div>
-                    {/*<div className='icon'>
-                      {choosedSize === filterSizes ? '✔' : ''}
-                </div>*/}
-                    <li className="dropdown-item" key={id} onClick={handleFontSize}>{size}</li>
+              <li className="dropdown-item active" disabled>{fontSizeINputVal === true ? fontSizeINputVal : textStyles.fontSize}</li>
+              <li><hr className="dropdown-divider"/></li>
+                {fontSizesArr.map((size, id) => { 
+                  return <div className="d-flex justify-content-between align-items-center" key={id}>
+                    <li className="dropdown-item" onClick={handleFontSize}>{size === 16 ? `${size} (Default)` : size}</li>
+                    <div className='icon' style={{color: 'Highlight'}}>
+                      {textStyles.fontSize === size ? '✔' : ''}
+                    </div>
                   </div> 
                 })}
               </ul>
             </div>
             <button
-              className="btn btn-light btn-sm d-flex m-2"
+              className={`btn btn-light btn-sm d-flex m-2`}
               onClick={handleBold}
               disabled={textValue.length === 0}
               data-bs-toggle="tooltip" data-bs-placement="top"

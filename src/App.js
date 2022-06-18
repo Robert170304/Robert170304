@@ -1,6 +1,6 @@
 import React from 'react';
 import About from './components/About';
-import Alert from './components/Alert';
+// import Alert from './components/Alert';
 import Navbar from './components/Navbar';
 import Textform from './components/Textform';
 import {
@@ -11,25 +11,25 @@ import {
 
 function App() {
 
-  const [mode, setMode] = React.useState(false)
-  const [alert, setAlert] = React.useState(null)
+  // const [mode, setMode] = React.useState(false)
+  // const [alert, setAlert] = React.useState(null)
   const currentTheme = localStorage.getItem("theme");
 
   if (currentTheme === "dark") {
     document.body.classList.add("dark-theme");
   }
   
-  function showAlert(msg, type) {
-    setAlert({message: msg, alertType: type})
-    setTimeout(() => {
-      setAlert(null)
-    }, 2500);
-  }
+  // function showAlert(msg, type) {
+  //   setAlert({message: msg, alertType: type})
+  //   setTimeout(() => {
+  //     setAlert(null)
+  //   }, 2500);
+  // }
 
   function handleMode() {
-      setMode((oldState) => {
-        return !oldState
-      });
+      // setMode((oldState) => {
+      //   return !oldState
+      // });
       document.body.classList.toggle("dark-theme");
       let theme = "light"
       if (document.body.classList.contains("dark-theme")) {
@@ -46,7 +46,7 @@ function App() {
           <Routes>
             <Route exact path="/about" element={<About theme={currentTheme}/>}></Route>
             <Route path="/" 
-            element={<Textform heading='Type Anything' showAlert={showAlert} theme={currentTheme}/>}
+            element={<Textform heading='Type Anything' theme={currentTheme}/>}
             ></Route>
           </Routes>
         </div>
