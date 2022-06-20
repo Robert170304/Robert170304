@@ -20,15 +20,7 @@ function Textform(props) {
     transition: "all 0.3s linear",
     borderRadius: "5px",
     marginTop: "100px",
-  };
-
-  let previewStyles = {
-    border: `2px solid ${props.theme === "dark" ? "#5F85DB" : "#111"}`,
-    borderRadius: "5px",
-    padding: "10px",
-    width: '100%',
-    backgroundColor: '#fff',
-    overflow: 'auto'
+    marginBottom: "50px"
   };
 
   const [textStyles, setTextStyles] = React.useState({fontSize: 16})
@@ -137,12 +129,19 @@ function Textform(props) {
     })
   }
 
-  function handleFontSizeChange(e) {
-    setTextStyles((oldStyles) => {
-      return {...oldStyles, fontSize: isNaN(e.target.value) || e.target.value === NaN || e.target.value === '' ?16 : parseInt(e.target.value)}
-    })
-    setFontSizeINputVal(e.target.value)
-  }
+  // function handleFontSizeChange(e) {
+  //   setFontSizeINputVal(e.target.value)
+  //   if(isNaN(e.target.value) || 
+  //     e.target.value === NaN ) {
+  //     setTextStyles((oldStyles) => {
+  //       return {...oldStyles, fontSize:  parseInt(e.target.value)}
+  //     })
+  //   } else if(e.target.value < 8 || e.target.value > 72 || e.target.value === 0) {
+  //     setTextStyles((oldStyles) => {
+  //       return {...oldStyles, fontSize: 16}
+  //     })
+  //   }
+  // }
 
   function handleFontSize(e) {
     setTextStyles((oldStyles) => {
@@ -160,7 +159,7 @@ function Textform(props) {
     <>
       {showClearTextModal && <ClearTextModal clearTextModal={ClearTextModal} 
       setShowClearTextModal={setShowClearTextModal} clearTextFunc={clearText}/>}
-      {showPreview ? <Preview handleClosePreview={handleClosePreview} previewStyles={previewStyles}textValue={textValue}/> :
+      {showPreview ? <Preview handleClosePreview={handleClosePreview} theme={props.theme}textValue={textValue}/> :
       <div className="container px-4 py-2" style={styles}>
         <div className="d-flex justify-content-between align-items-center">
           <div className="actionBtns d-flex justify-content-between align-items-center flex-wrap">
@@ -204,11 +203,11 @@ function Textform(props) {
               </ul>
             </div>
             <div className="input-group m-2 d-flex" style={{width: 'auto'}}>
-              <input type="number" placeholder={textStyles.fontSize} onChange={handleFontSizeChange} 
+              {/* {<input type="number" max={72} min={8} value={textStyles.fontSize} onChange={handleFontSizeChange} 
               className="form-control" aria-label="Text input with dropdown button" 
               disabled={textValue.length === 0}
-              style={{maxWidth: '50px'}}/>
-              <button className="btn btn-secondary btn-sm dropdown-toggle d-flex justify-content-between align-items-center" 
+              style={{maxWidth: '50px'}}/>} */}
+              <button className="btn btn-light btn-sm dropdown-toggle d-flex justify-content-between align-items-center" 
               type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled={textValue.length === 0}>
                 <span className="material-symbols-outlined">text_increase/text_decrease</span>
               </button>

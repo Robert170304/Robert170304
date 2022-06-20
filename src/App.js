@@ -11,7 +11,7 @@ import {
 
 function App() {
 
-  // const [mode, setMode] = React.useState(false)
+  const [mode, setMode] = React.useState(false)
   // const [alert, setAlert] = React.useState(null)
   const currentTheme = localStorage.getItem("theme");
 
@@ -27,9 +27,9 @@ function App() {
   // }
 
   function handleMode() {
-      // setMode((oldState) => {
-      //   return !oldState
-      // });
+      setMode((oldState) => {
+        return !oldState
+      });
       document.body.classList.toggle("dark-theme");
       let theme = "light"
       if (document.body.classList.contains("dark-theme")) {
@@ -39,19 +39,17 @@ function App() {
   }
 
   return (
-    <Router>
       <div className="App">
         <Navbar title='TypeWriter' modeClick={handleMode} theme={currentTheme}/>
         <div className='container'>
-          <Routes>
-            <Route exact path="/about" element={<About theme={currentTheme}/>}></Route>
-            <Route path="/" 
-            element={<Textform heading='Type Anything' theme={currentTheme}/>}
-            ></Route>
-          </Routes>
+        <Textform heading='Type Anything' theme={currentTheme}/>
+          {/* <Routes> */}
+            {/* <Route path="/textform"  */}
+              {/* element={<Textform heading='Type Anything' theme={currentTheme}/>}></Route> */}
+            {/* <Route exact path="/about" element={<About theme={currentTheme}/>}></Route> */}
+          {/* </Routes> */}
         </div>
       </div>
-    </Router>
   );
 }
 
